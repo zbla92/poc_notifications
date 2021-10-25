@@ -1,9 +1,12 @@
 import logo from './logo.svg';
 import './App.css';
 import { useState } from 'react';
+import { useToasts } from 'react-toast-notifications';
 
 function App() {
   const [notificationText, set] = useState('');
+  const { addToast } = useToasts();
+  const [notificationType, setNotificationType] = useState('success');
 
   const sendTheNotification = () => {
     const options = {
@@ -39,17 +42,8 @@ function App() {
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+
+        <label>Notify the browser about something...</label>
         <input
           name="notification"
           type="text"
@@ -57,8 +51,45 @@ function App() {
           onChange={(e) => set(e.target.value)}
         />
         <button onClick={() => sendTheNotification()}>
-          Send the notification
+          Send Push Notification
         </button>
+        <button
+          onClick={() => {
+            addToast(notificationText, {
+              appearance: notificationType,
+              autoDismiss: true,
+            });
+            set('');
+          }}
+        >
+          Send Toast Notification
+        </button>
+        <div>
+          <input
+            type="radio"
+            onChange={(e) => setNotificationType(e.target.value)}
+            checked={notificationType === 'success'}
+            value="success"
+            name="success"
+          />{' '}
+          Success
+          <input
+            type="radio"
+            onChange={(e) => setNotificationType(e.target.value)}
+            checked={notificationType === 'warning'}
+            value="warning"
+            name="warning"
+          />{' '}
+          Warning
+          <input
+            type="radio"
+            onChange={(e) => setNotificationType(e.target.value)}
+            checked={notificationType === 'error'}
+            value="error"
+            name="error"
+          />{' '}
+          Error
+        </div>
       </header>
     </div>
   );
