@@ -2,7 +2,13 @@ import logo from './logo.svg';
 import './App.css';
 import { useState } from 'react';
 import { useToasts } from 'react-toast-notifications';
-import { getBrowser, getOS, isMobile, mobileTablet } from './deviceDetector';
+import {
+  environmentInfo,
+  getBrowser,
+  getOS,
+  isMobile,
+  mobileTablet,
+} from './deviceDetector';
 
 function App() {
   const [notificationText, set] = useState('');
@@ -39,17 +45,18 @@ function App() {
     }
   };
 
+  window.environmentInfo = environmentInfo;
+
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Is this a Mobile Device:{' '}
-          {isMobile ? 'Yes it is!' : 'Nope, it is not!'}
+          Is this a Mobile Device: {environmentInfo.isMobile ? 'True' : 'False'}
         </p>
-        <p>Operating System: "{getOS}"</p>
-        <p>Browser: "{getBrowser}"</p>
-        <p>Is Tablet: "{mobileTablet ? 'Mhm' : 'nope'}"</p>
+        <p>Operating System: "{environmentInfo.OS}"</p>
+        <p>Browser: "{environmentInfo.browser.type}"</p>
+        <p>Is Tablet: "{environmentInfo.isTablet ? 'True' : 'False'}"</p>
 
         <label>Notify the browser about something...</label>
         <input
